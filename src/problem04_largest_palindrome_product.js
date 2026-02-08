@@ -61,8 +61,53 @@ function largestPalindromeProduct(n){
 function isPalindrome(n){
     const s = n.toString();
     return s === s.split("").reverse().join("");
+
+
 }
 
+
+/* =========================================================
+ * 🚀 ALTERNATIVE APPROACH: GENERATE PALINDROMES DIRECTLY
+ * =========================================================
+ *
+ * Key Idea:
+ * - The largest palindrome will be found first if we generate 
+ *   palindromes in descending order.
+ * - Instead of multiplying every pair, we:
+ *      1. Constuct palindromes directly
+ *      2. Check it they can be factored into two n-digit numbers
+ * 
+ * This drastically reduces the search space.
+ * 
+ * Time Complexity:
+ * - Palindrome generation: O(10^n)
+ * - Factor checks: O(10^n) in worst case
+ * - Much faster in practice than brute force
+ * 
+ * Space Complexity: O(1)
+ * 
+ */
+
+function largestPalindromeProduct(n){
+    const upper = Math.pow(10, n) - 1;
+    const lower = Math.pow(10, n - 1);
+
+    for(let left = upper; left >= lower; left--){
+        const palindrome = parseInt(left.toString() + left.toString().split('').reverse().join(""));
+
+        for(let divisor = upper; divisor >= lower; divisor--){
+            if(palindrome % divisor === 0){
+                const quotient  = palindrome / divisor;
+                if(quotient >= lower && quotient <= upper){
+                    return palindrome;
+                }
+            }
+        }
+
+       
+    }
+     return -1;
+}
 
 /* =========================================================
  * ▶️ EXECUTION / VERIFICATION
